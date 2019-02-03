@@ -10,7 +10,7 @@ In this particular version of the game, a large square image is split among 15 s
 
 The user is able to rearrange the tiles on the board by clicking those tiles adjacent to the empty space. The clicked tile is then moved into the empty space, and the empty space now occupies the position of the moved tile.
 
-Game play is complete when the tiles have been property reordered.
+Game play is complete when the tiles have been property reordered to their starting positions.
 
 I would like to add the following additional functionalities to my applet:
 1. User is able to replay after a win.
