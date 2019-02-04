@@ -1,5 +1,6 @@
 let board = document.querySelector('.board');
-let images = ["assets/0.png","assets/1.png","assets/2.png","assets/3.png","assets/4.png","assets/5.png","assets/6.png","assets/7.png","assets/8.png","assets/9.png","assets/10.png","assets/11.png","assets/12.png","assets/13.png","assets/14.png","assets/15.png"];
+let currentBestMoves;
+let currentBestTime;
 let boardPositions = [
   [1,2,3,4],
   [5,6,7,8],
@@ -7,7 +8,7 @@ let boardPositions = [
   [13,14,15,16]
 ];
 
-document.getElementById("start").addEventListener('click', AddListenersAndRandomizeBoard);
+document.querySelector(".start").addEventListener('click', AddListenersAndRandomizeBoard);
 
 function makeBoard (array) {
   let i=0;
@@ -17,7 +18,7 @@ function makeBoard (array) {
        newCell.setAttribute('class','cell');
        newCell.dataset.row = array.indexOf(row);
        newCell.setAttribute('id',i);
-       newCell.style.background = "url(" + `"${images[i]}"` +")";
+       newCell.style.background = "url(assets/" + `${i}` +".png)";
        newCell.style.order = a-1;
        board.appendChild(newCell);
        i++;
@@ -44,8 +45,9 @@ function swapOrder (x,y) {
 }
 function renderScreenAndCheckWin () {
   let boardDivs = Array.from(document.querySelectorAll('.cell'));
-  if (boardDivs.every((a)=>(a.id == a.style.order))) {
+  if (boardDivs.every(a => (a.id == a.style.order))) {
     alert("You win");
+    boardDivs.forEach(a => a.removeEventListener('click',testForMove));
   }
 }
 function randomizeTiles () {
