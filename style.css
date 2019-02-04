@@ -3,7 +3,7 @@ body {
   display: flex;
   justify-content: center;
 }
-#board {
+.board {
   position: relative;
   width: 410px;
   height: 410px;
@@ -28,7 +28,7 @@ body {
   margin: 1px;
   height: 100px;
   width: 100px;
-  background: yellowgreen;
+  background: green;
 }
 .emptySpace {
   position: relative;
@@ -36,4 +36,8 @@ body {
   height: 100px;
   width: 100px;
   background: black;
+}
+img {
+  height: 100%;
+  width: 100%;
 }

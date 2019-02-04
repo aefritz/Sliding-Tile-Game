@@ -2,6 +2,10 @@
 
 JavaScript-based game challenging players to properly order tiles in a square grid.
 
+## Acknowledgements
+
+Images courtesy of Rachel Lang @ https://africageographic.com/blog/crazy-baby-honey-badger/
+
 ## Description
 
 This project is a JavaScript-based version of a popular puzzle-like game.
