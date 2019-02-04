@@ -1,27 +1,34 @@
 body {
   background: rgba(150,150,150,1);
-  display: flex;
-  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+header {
+  background: yellow;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  margin: 0;
+  padding: 0;
+}
+.main {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 50px 200px 50px 450px;
 }
 .board {
   position: relative;
   width: 410px;
   height: 410px;
-  background: white;
+  background: turquoise;
+  margin: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-}
-.row {
-  width: 410px;
-  height: 102.5px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  background: turquoise;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-column-start: 4;
 }
 .cell {
   margin: 1px;
