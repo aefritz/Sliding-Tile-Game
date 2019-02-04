@@ -1,0 +1,39 @@
+body {
+  background: rgba(150,150,150,1);
+  display: flex;
+  justify-content: center;
+}
+#board {
+  position: relative;
+  width: 410px;
+  height: 410px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.row {
+  width: 410px;
+  height: 102.5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background: turquoise;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cell {
+  position: relative;
+  margin: 1px;
+  height: 100px;
+  width: 100px;
+  background: yellowgreen;
+}
+.emptySpace {
+  position: relative;
+  margin: 1px;
+  height: 100px;
+  width: 100px;
+  background: black;
+}
