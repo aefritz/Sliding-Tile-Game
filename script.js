@@ -10,8 +10,6 @@ let boardPositions = [
 function makeBoard (array) {
   let i=0;
   array.forEach((row) => {
-     let newRow = document.createElement('div');
-     newRow.setAttribute('class','row');
      row.forEach((a) => {
        let newCell = document.createElement('div');
        newCell.setAttribute('class','cell');
@@ -19,11 +17,10 @@ function makeBoard (array) {
        newCell.setAttribute('id',i);
        newCell.addEventListener('click',testForMove);
        newCell.style.background = "url(" + `"${images[i]}"` +")";
-       newRow.appendChild(newCell);
-       positions.push({current: i});
+       newCell.style.order = a-1;
+       board.appendChild(newCell);
        i++;
      });
-     board.appendChild(newRow);
   });
 }
 makeBoard(boardPositions);
@@ -31,25 +28,19 @@ makeBoard(boardPositions);
 document.getElementById('0').setAttribute('class','emptySpace');
 
 function testForMove (ev) {
-  if (((Math.abs(ev.target.id - document.querySelector('.emptySpace').id) === 1) && (ev.target.dataset.y === document.querySelector('.emptySpace').dataset.y)) || (Math.abs(ev.target.id - document.querySelector('.emptySpace').id) === 4)) {
-    document.querySelector('.emptySpace').setAttribute('class','cell');
-    ev.target.setAttribute('class','emptySpace');
-    swap(positions[ev.target.id], positions[document.querySelector('.emptySpace').id]);
-    /* renderScreenAndCheckWin();
-    */
+  if (((Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 1) || (Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 4))) {
+    swapOrder(ev.target, document.querySelector('.emptySpace'));
+    renderScreenAndCheckWin();
   }
 }
-function swap (x,y) {
-  let a = y;
-  y = x;
-  x = a;
+function swapOrder (x,y) {
+  let a = x.style.order;
+  x.style.order = y.style.order;
+  y.style.order = a;
 }
 function renderScreenAndCheckWin () {
-  let boardDivs = document.querySelectorAll('.cell');
-  for (i=0;i<boardDivs.length;i++){
-    document.getElementById(`${i}`).style.background = "url:(" + positions[i].imgUrl +")";
-  }
-  if (boardDivs.every((a)=>(a.id == positions[parseInt(a.id)].current))) {
+  let boardDivs = Array.from(document.querySelectorAll('.cell'));
+  if (boardDivs.every((a)=>(a.id == a.style.order))) {
     alert("You win");
   }
 }

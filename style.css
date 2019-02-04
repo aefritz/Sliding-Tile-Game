@@ -24,7 +24,6 @@ body {
   align-items: center;
 }
 .cell {
-  position: relative;
   margin: 1px;
   height: 100px;
   width: 100px;
@@ -35,7 +34,6 @@ body {
   margin: 1px;
   height: 100px;
   width: 100px;
-  background: black;
 }
 img {
   height: 100%;
