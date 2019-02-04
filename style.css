@@ -2,6 +2,7 @@ body {
   background: rgba(150,150,150,1);
   padding: 0;
   margin: 0;
+  font-family: helvetica, sans-serif;
 }
 header {
   background: turquoise;
@@ -9,7 +10,8 @@ header {
   padding: 0;
 }
 h1 {
-  margin-left: 23%;
+  margin: 0;
+  margin-left: 35%;
   padding: 0;
 }
 main {
@@ -19,9 +21,14 @@ main {
   grid-template-columns: 23% 4% 1fr 8%;
 }
 section {
-  padding-top: 80px;
+  padding-top: 40px;
   background: turquoise;
   grid-column-start: 1;
+}
+button {
+  font-size: 28px;
+  border-radius: 5px;
+  background: none;
 }
 .board {
   position: relative;
