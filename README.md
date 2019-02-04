@@ -22,8 +22,8 @@ I would like to add the following additional functionalities to my applet:
 ## Technologies used:
 
 1. HTML
-2. CSS
-3. JavaScript
+2. CSS - flex box, animations
+3. JavaScript - array methods: forEach, filter
 
 
 ## Major problems foreseen
