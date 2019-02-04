@@ -91,11 +91,11 @@ function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random 
   time = 0;
   moves = 0;
   interval = setInterval(updateTime, 1000);
+  document.querySelector('.number-moves').innerText = `Moves: 0`;
 }
 
 function updateTime () {
   document.querySelector('.current-time').innerText = `Current Time: ${time} s`;
-  document.querySelector('.number-moves').innerText = `Moves: 0`;
   time++;
 }
 
