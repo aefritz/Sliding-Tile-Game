@@ -1,4 +1,7 @@
 let board = document.querySelector('.board');
+let interval;
+let time = 0;
+let moves = 0;
 let currentBestMoves;
 let currentBestTime;
 let boardPositions = [
@@ -32,6 +35,8 @@ document.getElementById('0').setAttribute('class','emptySpace');
 function testForMove (ev) {
   if (((Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 1 && (ev.target.dataset.row == document.querySelector('.emptySpace').dataset.row)) || (Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 4))) {
     swapOrder(ev.target, document.querySelector('.emptySpace'));
+    moves++;
+    document.querySelector('.number-moves').innerText = `Moves: ${moves}`;
     renderScreenAndCheckWin();
   }
 }
@@ -48,11 +53,18 @@ function renderScreenAndCheckWin () {
   if (boardDivs.every(a => (a.id == a.style.order))) {
     alert("You win");
     boardDivs.forEach(a => a.removeEventListener('click',testForMove));
+    clearInterval(interval);
+    if ((time < currentBestTime) || !(currentBestTime)) {
+      currentBestTime = time;
+    }
+    if (moves < currentBestMoves || !(currentBestMoves)) {
+      currentBestMoves = moves;
+    }
+    updateBestScores();
   }
 }
 function randomizeTiles () {
   let emptyPos = document.querySelector('.emptySpace');
-  console.log(emptyPos);
   let boardDivs = Array.from(document.querySelectorAll('.cell'));
   let validSwitches = boardDivs.filter(a => (((Math.abs(a.style.order-emptyPos.style.order) === 1) && (a.dataset.row == emptyPos.dataset.row))) || (Math.abs(a.style.order-emptyPos.style.order) === 4));
   let noOfValidMoves = validSwitches.length;
@@ -76,4 +88,18 @@ function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random 
       }
     }
   }
+  time = 0;
+  moves = 0;
+  interval = setInterval(updateTime, 1000);
+}
+
+function updateTime () {
+  document.querySelector('.current-time').innerText = `Current Time: ${time} s`;
+  document.querySelector('.number-moves').innerText = `Moves: 0`;
+  time++;
+}
+
+function updateBestScores() {
+  document.querySelector('.best-time').innerText = `Current Time: ${currentBestTime} s`;
+  document.querySelector('.best-moves').innerText = `Moves: ${currentBestMoves}`;
 }
