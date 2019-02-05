@@ -102,7 +102,7 @@ function updateBestScores() {
   document.querySelector('.best-time').innerText = `Best Time: ${currentBestTime} s`;
   document.querySelector('.best-moves').innerText = `Best Moves: ${currentBestMoves}`;
 }
-function extractIDFromClass (str) { //to avoid use of Id, a unique identifiers is stored in a class name and extracted using this function
+function extractIDFromClass (str) { //to avoid use of Id, a unique identifier is stored in a class name for each div element and extracted using this function
   let newArray = str.split('');
   newArray.splice(0,2);
   newStr = newArray.join('');
