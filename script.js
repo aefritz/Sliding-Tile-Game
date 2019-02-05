@@ -85,9 +85,9 @@ function randomizeTiles () { //this function locates the empty space in the puzz
 function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
   let cells = document.querySelectorAll('.cell');
   cells.forEach(a => a.addEventListener('click',testForMove));
-  for (h=0;h<2;h++) {
-    for (j=0;j<2;j++) {
-      for (i=0;i<2;i++) {
+  for (h=0;h<5;h++) {
+    for (j=0;j<5;j++) {
+      for (i=0;i<5;i++) {
         randomizeTiles();
       }
     }
