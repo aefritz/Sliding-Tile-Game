@@ -39,7 +39,7 @@ function testForMove (ev) {  //testForMove checks whether or not style.order for
     renderScreenAndCheckWin();
   }
 }
-function swapOrder (x,y) {
+function swapOrder (x,y) { //swaps the order of elements x and y
   let a = x.style.order;
   let b = x.dataset.row;
   x.style.order = y.style.order;
@@ -47,7 +47,7 @@ function swapOrder (x,y) {
   y.style.order = a;
   y.dataset.row = b;
 }
-function renderScreenAndCheckWin () {
+function renderScreenAndCheckWin () { //checks whether or not the CSS order of the elements matches their classIDs. If so, timers are removed and record scores are updated if necessary.
   let boardDivs = Array.from(document.querySelectorAll('.cell'));
   if (boardDivs.every(a => (extractIDFromClass(a.classList[1]) == a.style.order))) {
     alert("You win");
@@ -62,22 +62,22 @@ function renderScreenAndCheckWin () {
     updateBestScores();
   }
 }
-function randomizeTiles () {
+function randomizeTiles () { //this function locates the empty space in the puzzleboard and searches for the tiles around it that could validly be moved into the space. The function then chooses between these possibilites at random.
   let emptyPos = document.querySelector('.emptySpace');
-  let boardDivs = Array.from(document.querySelectorAll('.cell'));
+  let boardDivs = Array.from(document.querySelectorAll('.cell')); //the NodeList needs to be cast as an array before we filter among the necessary conditions
   let validSwitches = boardDivs.filter(a => (((Math.abs(a.style.order-emptyPos.style.order) === 1) && (a.dataset.row == emptyPos.dataset.row))) || (Math.abs(a.style.order-emptyPos.style.order) === 4));
-  let noOfValidMoves = validSwitches.length;
-  let incrementForRando = 1 / (noOfValidMoves);
+  let noOfValidMoves = validSwitches.length; //how many possible moves are there?
+  let incrementForRando = 1 / (noOfValidMoves); //the size of this increment decreases when there are more possibilites. This is used to segment the width [0,1] into a number of intervals. Whichever interval the random number falls into coresponds with which of the possible moves the program will use to scramble the puzzleboard.
   let newRandom = Math.random();
   let positionToBeSwapped;
   for (i = 0; i < validSwitches.length; i++) {
-    if ((newRandom >= i*incrementForRando) && (newRandom < (i+1)*incrementForRando)) {
+    if ((newRandom >= i*incrementForRando) && (newRandom < (i+1)*incrementForRando)) { //does the random number fall in the ith interval?
       positionToBeSwapped = extractIDFromClass(validSwitches[i].classList[1]);
     }
   }
   swapOrder(emptyPos, document.querySelector(`.id${positionToBeSwapped}`));
 }
-function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; nested loops took compute time
+function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
   let cells = document.querySelectorAll('.cell');
   cells.forEach(a => a.addEventListener('click',testForMove));
   for (h=0;h<5;h++) {
@@ -87,7 +87,7 @@ function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random 
       }
     }
   }
-  time = 0;
+  time = 0; //following lines reset timers and move counters
   moves = 0;
   interval = setInterval(updateTime, 1000);
   document.querySelector('.number-moves').innerText = `Moves: 0`;
@@ -102,7 +102,7 @@ function updateBestScores() {
   document.querySelector('.best-time').innerText = `Best Time: ${currentBestTime} s`;
   document.querySelector('.best-moves').innerText = `Best Moves: ${currentBestMoves}`;
 }
-function extractIDFromClass (str) {
+function extractIDFromClass (str) { //to avoid use of Id, a unique identifiers is stored in a class name and extracted using this function
   let newArray = str.split('');
   newArray.splice(0,2);
   newStr = newArray.join('');
