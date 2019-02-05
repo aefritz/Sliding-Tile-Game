@@ -76,10 +76,10 @@ p {
   font-weight: 800;
   margin-left: 20px;
 }
-@media (max-width: 750px) {
+@media (max-width: 780px) {
   p {
     margin-left: 10px;
-    font-size: 14px;
+    font-size: 12px;
   }
   button {
     padding: 0;

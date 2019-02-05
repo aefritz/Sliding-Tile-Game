@@ -10,6 +10,8 @@ let boardPositions = [  //two-dimensional array that is iterated through to set 
   [9,10,11,12],
   [13,14,15,16]
 ];
+let moveAudio = document.querySelectorAll('audio')[0];
+let winAudio = document.querySelectorAll('audio')[1];
 
 document.querySelector(".start").addEventListener('click', AddListenersAndRandomizeBoard); //when clicked, the start button randomizes the board, adds click listeners to each tile, and starts timer and move counters
 
@@ -35,6 +37,8 @@ function testForMove (ev) {  //testForMove checks whether or not style.order for
   if (((Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 1 && (ev.target.dataset.row == document.querySelector('.emptySpace').dataset.row)) || (Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 4))) {
     swapOrder(ev.target, document.querySelector('.emptySpace')); //swap the position of the empty space and the target tile
     moves++; //a move was made, so we up the move counter
+    moveAudio.currentTime = 0.3;
+    moveAudio.play();
     document.querySelector('.number-moves').innerText = `Moves: ${moves}`; //update the move counter in the DOM;
     renderScreenAndCheckWin();
   }
@@ -50,6 +54,7 @@ function swapOrder (x,y) { //swaps the order of elements x and y
 function renderScreenAndCheckWin () { //checks whether or not the CSS order of the elements matches their classIDs. If so, timers are removed and record scores are updated if necessary.
   let boardDivs = Array.from(document.querySelectorAll('.cell'));
   if (boardDivs.every(a => (extractIDFromClass(a.classList[1]) == a.style.order))) {
+    winAudio.play();
     alert("You win");
     boardDivs.forEach(a => a.removeEventListener('click',testForMove));
     clearInterval(interval);
@@ -80,9 +85,9 @@ function randomizeTiles () { //this function locates the empty space in the puzz
 function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
   let cells = document.querySelectorAll('.cell');
   cells.forEach(a => a.addEventListener('click',testForMove));
-  for (h=0;h<5;h++) {
-    for (j=0;j<4;j++) {
-      for (i=0;i<4;i++) {
+  for (h=0;h<2;h++) {
+    for (j=0;j<2;j++) {
+      for (i=0;i<2;i++) {
         randomizeTiles();
       }
     }
@@ -94,7 +99,7 @@ function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random 
 }
 
 function updateTime () {
-  document.querySelector('.current-time').innerText = `Current Time: ${time} s`;
+  document.querySelector('.current-time').innerText = `Current Time: ${time}s`;
   time++;
 }
 
