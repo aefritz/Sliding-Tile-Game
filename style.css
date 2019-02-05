@@ -36,6 +36,10 @@ button {
   border: 3px solid black;
   background: none;
 }
+button:hover {
+  background: black;
+  color: turquoise;
+}
 .board {
   position: relative;
   width: 410px;
