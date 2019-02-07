@@ -98,7 +98,6 @@ function randomizeTiles () { //this function locates the empty space in the puzz
   let emptyPos = document.querySelector('.emptySpace');
   let boardDivs = Array.from(document.querySelectorAll('.cell')); //the NodeList needs to be cast as an array before we filter among the necessary conditions
   let validSwitches = boardDivs.filter(a => (((Math.abs(a.style.order - emptyPos.style.order) === 1) && (a.dataset.row == emptyPos.dataset.row))) || (Math.abs(a.style.order - emptyPos.style.order) === gridSize));
-  console.log(validSwitches)
   let noOfValidMoves = validSwitches.length; //how many possible moves are there?
   let incrementForRando = 1 / (noOfValidMoves); //the size of this increment decreases when there are more possibilites. This is used to segment the width [0,1] into a number of intervals. Whichever interval the random number falls into coresponds with which of the possible moves the program will use to scramble the puzzleboard.
   let newRandom = Math.random();
@@ -111,12 +110,21 @@ function randomizeTiles () { //this function locates the empty space in the puzz
   swapOrder(emptyPos, document.querySelector(`.id${positionToBeSwapped}`));
 }
 function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
+  if (interval) {
+    clearInterval(interval);
+  }
   let cells = document.querySelectorAll('.cell');
   cells.forEach(a => a.addEventListener('click',testForMove));
-  for (h=0; h<4; h++) {
-    for (j=0; j<5; j++) {
-      for (i=0; i<5; i++) {
-        randomizeTiles(gridSize);
+  if (gridSize === 2) {
+    randomizeTiles();
+    randomizeTiles();
+    randomizeTiles();
+  } else {
+    for (h=0; h<4; h++) {
+      for (j=0; j<5; j++) {
+        for (i=0; i<5; i++) {
+          randomizeTiles();
+        }
       }
     }
   }
