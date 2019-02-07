@@ -20,7 +20,7 @@ board.style.height = "410px";
 
 start.addEventListener('click', AddListenersAndRandomizeBoard); //when clicked, the start button randomizes the board, adds click listeners to each tile, and starts timer and move counters
 setPuzzle.addEventListener('click', setPuzzleBoard); //resets the puzzle board;
-showImage.addEventListener('click', toggleImageHint);
+showImage.addEventListener('click', toggleImageHint); //displays or hides hint image
 
 function setPuzzleBoard () {
   gridSize = getGridValue(); //
@@ -31,14 +31,14 @@ function setPuzzleBoard () {
   let customBoardArray = makeBoardArray(gridSize);
   makeBoard(customBoardArray);
 }
-setPuzzleBoard(); //sets the puzzle board to the defaults specified above
-window.addEventListener('resize',adjustScreen);
 
-function clearBoard () {
-  document.querySelectorAll('.cell').forEach(a => a.remove());
-}
+setPuzzleBoard(); //sets the puzzle board to the defaults specified above
+window.addEventListener('resize',adjustScreen); //checks if the screen is resized & runs the function adjustScreen, which resizes div elements in puzzle board
+
 
 function makeBoard (array) {
+  let boardWidth = extractPixels(board.style.width);
+  let boardHeight = extractPixels(board.style.height);
   array.forEach((row) => {
      row.forEach((a) => {
        let newCell = document.createElement('div'); //each tile is a div element
@@ -47,9 +47,7 @@ function makeBoard (array) {
        } else {
          newCell.setAttribute('class',`cell id${a}`);
        }
-       let boardWidth = extractPixels(board.style.width);
-       let boardHeight = extractPixels(board.style.height);
-       newCell.style.width = `${(boardWidth-10)/gridSize}px`;
+       newCell.style.width = `${(boardWidth-10)/gridSize}px`; //the 10s here represents the total pixels of margin space after tiles are positioned
        newCell.style.height = `${(boardHeight-10)/gridSize}px`;
        newCell.dataset.row = array.indexOf(row);    //dataset.row becomes necessary to check whether certain moves are valid below, corresponds with the row in the two dimensional array above.
        newCell.style.order = a;  //the tiles on the puzzleboard are arranged in a flexbox that wraps; style.order provides an easy way of reordering the tiles and also tracking how they've been rearranged relative to the start;
@@ -58,21 +56,23 @@ function makeBoard (array) {
        newCell.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
        newCell.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`;
        board.appendChild(newCell);
-       document.querySelector('.emptySpace').style.background = 'black';
     });
   });
+  document.querySelector('.emptySpace').style.background = 'black';
 }
 
 function testForMove (ev) {  //testForMove checks whether or not style.order for a div element has a difference of 1 (for same row) or 4 from the empty space. This is the condition that constitutes a valid move.
-  if (((Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 1 && (ev.target.dataset.row == document.querySelector('.emptySpace').dataset.row)) || (Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === getGridValue()))) {
+  let emptySpace = document.querySelector('.emptySpace')
+  if (((Math.abs(ev.target.style.order - emptySpace.style.order) === 1 && (ev.target.dataset.row == emptySpace.dataset.row)) || (Math.abs(ev.target.style.order - emptySpace.style.order) === gridSize)) {
     swapOrder(ev.target, document.querySelector('.emptySpace')); //swap the position of the empty space and the target tile
     moves++; //a move was made, so we up the move counter
-    moveAudio.currentTime = 0.3;
+    moveAudio.currentTime = 0.3; //to better align the audio sample to the sound
     moveAudio.play();
     document.querySelector('.number-moves').innerText = `Moves: ${moves}`; //update the move counter in the DOM;
     renderScreenAndCheckWin();
   }
 }
+
 function swapOrder (x,y) { //swaps the order of elements x and y
   let a = x.style.order;
   let b = x.dataset.row;
@@ -81,14 +81,15 @@ function swapOrder (x,y) { //swaps the order of elements x and y
   y.style.order = a;
   y.dataset.row = b;
 }
+
 function renderScreenAndCheckWin () { //checks whether or not the CSS order of the elements matches their classIDs. If so, timers are removed and record scores are updated if necessary.
   let boardDivs = Array.from(document.querySelectorAll('.cell'));
   if (boardDivs.every(a => (extractIDFromClass(a.classList[1]) == a.style.order))) {
     winAudio.play();
     alert("You win");
-    boardDivs.forEach(a => a.removeEventListener('click',testForMove));
-    clearInterval(interval);
-    if ((time < currentBestTime) || !(currentBestTime)) {
+    boardDivs.forEach(a => a.removeEventListener('click',testForMove)); //when you win, the puzzle tiles lock up
+    clearInterval(interval); //timer stops counting
+    if ((time < currentBestTime) || !(currentBestTime)) { //following lines of code determine whether the game stats for the game just finished are records.. second logical operators in each conidtional determine whether or not its the first game
       currentBestTime = time;
     }
     if (moves < currentBestMoves || !(currentBestMoves)) {
@@ -97,6 +98,7 @@ function renderScreenAndCheckWin () { //checks whether or not the CSS order of t
     updateBestScores();
   }
 }
+
 function randomizeTiles () { //this function locates the empty space in the puzzleboard and searches for the tiles around it that could validly be moved into the space. The function then chooses between these possibilites at random.
   let emptyPos = document.querySelector('.emptySpace');
   let boardDivs = Array.from(document.querySelectorAll('.cell')); //the NodeList needs to be cast as an array before we filter among the necessary conditions
@@ -112,7 +114,8 @@ function randomizeTiles () { //this function locates the empty space in the puzz
   }
   swapOrder(emptyPos, document.querySelector(`.id${positionToBeSwapped}`));
 }
-function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
+
+function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took really long to execute. if gridSize = 2, it only iterates 3 times.
   if (interval) {
     clearInterval(interval);
   }
@@ -137,6 +140,10 @@ function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random 
   document.querySelector('.number-moves').innerText = `Moves: 0`;
 }
 
+function clearBoard () {
+  document.querySelectorAll('.cell').forEach(a => a.remove());
+}
+
 function updateTime () {
   document.querySelector('.current-time').innerText = `Current Time: ${time}s`;
   time++;
@@ -146,13 +153,15 @@ function updateBestScores() {
   document.querySelector('.best-time').innerText = `Best Time: ${currentBestTime} s`;
   document.querySelector('.best-moves').innerText = `Best Moves: ${currentBestMoves}`;
 }
+
 function extractIDFromClass (str) { //to avoid use of Id, a unique identifier is stored in a class name for each div element and extracted using this function
   let newArray = str.split('');
   newArray.splice(0,2);
   newStr = newArray.join('');
   return parseInt(newStr);
 }
-function makeBoardArray (value) {
+
+function makeBoardArray (value) { //creates a two dimensional array, for input n, returns array containing {1...n^2}
   let counter = 0;
   let returnArray = [];
   for (i=0;i<value;i++) {
@@ -165,17 +174,21 @@ function makeBoardArray (value) {
   }
   return returnArray;
 }
-function extractPixels (str) {
+
+function extractPixels (str) { //function takes a size property of a style object and returns the size as a number without 'px'
   return parseInt(str.substring(0, str.length - 2));
 }
+
 function getGridValue () {
   return parseInt(setGrid.value);
 }
-function updateSrc (filesArray) {
+
+function updateSrc (filesArray) { //creates a proxy file path for a user-selected file and updates the value of the imageSrc text field accordingly
   let newSrc = window.URL.createObjectURL(filesArray[0])
   imageSrc.value = newSrc;
 }
-function adjustScreen () {
+
+function adjustScreen () { //gives instructions for resizing the puzzle board based on the current size of the screen
   if (window.matchMedia("(max-width: 650px)").matches) {
     board.style.width = `310px`;
     board.style.height = `310px`;
@@ -186,20 +199,22 @@ function adjustScreen () {
     reSize();
   }
 }
+
 function reSize () {
+  let boardWidth = extractPixels(board.style.width);
+  let boardHeight = extractPixels(board.style.height);
   document.querySelectorAll('.cell').forEach(a => {
-    let boardWidth = extractPixels(board.style.width);
-    let boardHeight = extractPixels(board.style.height);
-    a.style.width = `${(boardWidth-10)/gridSize}px`;
+    a.style.width = `${(boardWidth-10)/gridSize}px`; //the 10s here represent the total available margin space in the puzzleboard; after the tiles are positioned
     a.style.height = `${(boardHeight-10)/gridSize}px`;
     a.style.backgroundSize = `${boardWidth-10}px ${boardHeight-10}px`;
     a.style.backgroundPosition = `${-((boardWidth-10)/gridSize)*((parseInt(a.style.order)-1)%gridSize)}px ${-((boardHeight-10)/gridSize)*(parseInt((parseInt(a.style.order)-1)/gridSize))}px`;
   });
 }
+
 function toggleImageHint () {
   let hiddenDisplay = document.querySelector('.hiddenDisplay');
   if (!imageToggler){
-    hiddenDisplay.style.display = 'block';
+    hiddenDisplay.style.display = 'block'; //following lines of code make the hidden div visible...
     hiddenDisplay.style.width = '100%';
     hiddenDisplay.style.height = '100%';
     hiddenDisplay.style.zIndex = '1';
@@ -207,7 +222,7 @@ function toggleImageHint () {
     hiddenDisplay.addEventListener('click',toggleImageHint);
     document.querySelector('.imageContainer').innerHTML = `<img src = ${imageSrc.value}>`;
   } else if (imageToggler){
-    hiddenDisplay.style.display = 'none';
+    hiddenDisplay.style.display = 'none'; //the following lines of code hide the div again
     hiddenDisplay.style.width = '0%';
     hiddenDisplay.style.height = '0%';
     hiddenDisplay.style.zIndex = '0';
