@@ -10,7 +10,9 @@ let imageSrc = document.querySelector('.setImage');
 let setGrid = document.querySelector('.setGrid');
 let setPuzzle = document.querySelector('.setPuzzle')
 let start = document.querySelector('.start');
+let showImage = document.querySelector('.showImage');
 let gridSize; //allows the current puzzle size to be accessed globally
+let imageToggler = false; //Boolean for whether or not the hint image and its div are visible;
 setGrid.value = 4; //sets default value for the puzzle size
 imageSrc.value = "assets/the-scream.jpg"; //sets a default value for the puzzle image
 board.style.width = "410px";
@@ -18,6 +20,7 @@ board.style.height = "410px";
 
 start.addEventListener('click', AddListenersAndRandomizeBoard); //when clicked, the start button randomizes the board, adds click listeners to each tile, and starts timer and move counters
 setPuzzle.addEventListener('click', setPuzzleBoard); //resets the puzzle board;
+showImage.addEventListener('click', toggleImageHint);
 
 function setPuzzleBoard () {
   gridSize = getGridValue(); //
@@ -192,4 +195,21 @@ function reSize () {
     a.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
     a.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`;
   });
+}
+function toggleImageHint () {
+  if (!imageToggler){
+    document.querySelector('.hiddenDisplay').style.display = 'block';
+    document.querySelector('.hiddenDisplay').style.width = '100%';
+    document.querySelector('.hiddenDisplay').style.height = '100%';
+    document.querySelector('.hiddenDisplay').style.zIndex = '1';
+    imageToggler = true;
+    document.querySelector('.hiddenDisplay').addEventListener('click',toggleImageHint);
+    document.querySelector('.imageContainer').innerHTML = `<img src = ${imageSrc.value}>`;
+  } else if (imageToggler){
+    document.querySelector('.hiddenDisplay').style.display = 'none';
+    document.querySelector('.hiddenDisplay').style.width = '0%';
+    document.querySelector('.hiddenDisplay').style.height = '0%';
+    document.querySelector('.hiddenDisplay').style.zIndex = '0';
+    imageToggler = false;
+  }
 }

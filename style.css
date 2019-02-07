@@ -12,6 +12,31 @@ header {
   padding-bottom: 20px;
   text-align: center;
 }
+.hiddenDisplay {
+  margin: 0;
+  padding: 0;
+  display: none;
+  width: 0;
+  height: 0;
+  position: fixed;
+  padding-top: 50px;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.5);
+}
+.imageContainer {
+  position: relative;
+  width: 50%;
+  height: 500px;
+  margin: 0 auto;
+  background: white;
+}
+.showImage {
+  width: 150px;
+  font-size: 18px;
+  margin: 0;
+  margin-top: 10px;
+}
 h1 {
   width: 50%;
   margin: 0 auto;
@@ -175,6 +200,10 @@ span {
     margin-left: 45px;
   }
   .setPuzzle {
+    font-size: 18px;
+    width: 70%;
+  }
+  .showImage {
     font-size: 18px;
     width: 70%;
   }
