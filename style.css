@@ -10,12 +10,22 @@ header {
   padding: 0;
   padding-top: 20px;
   padding-bottom: 20px;
+  text-align: center;
 }
 h1 {
   width: 50%;
   margin: 0 auto;
+  margin-bottom: 15px;
   padding: 0;
   text-align: center;
+  font-size: 36px;
+}
+a {
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 2px;
+  color: black;
 }
 main {
   margin: 0;
@@ -80,7 +90,7 @@ button:hover {
 }
 .setPuzzle {
   width: 150px;
-  font-size: 22px;
+  font-size: 18px;
   margin: 0;
 }
 .cell {
@@ -101,13 +111,20 @@ img {
 }
 input {
   margin: 0;
-  width: 25%;
+  width: 20%;
   height: 20px;
   font-size: 18px;
   text-align: center;
+  background: turquoise;
+  border: 0.5px solid black;
+  border-radius: 2px;
 }
 .upload {
   width: 90px;
+  border: none;
+}
+.container2 {
+  padding-left: 10px;
 }
 p {
   line-height: 50px;
@@ -128,13 +145,13 @@ span {
   }
   button {
     padding: 0;
-    width: 55px;
+    width: 80px;
     font-size: 18px;
   }
   h1 {
-    font-size: 28px;
     width: 50%;
     margin: 0 auto;
+    margin-bottom: 10px;
   }
   span {
     font-size: 16px;
@@ -159,7 +176,7 @@ span {
   }
   .setPuzzle {
     font-size: 18px;
-    width: 100%;
+    width: 70%;
   }
   .controlPanel {
     justify-content: flex-start;
@@ -174,7 +191,10 @@ span {
     width: 32%;
   }
   .container2 {
-    width: 40%;
+    width: 50%;
+  }
+  .container3 {
+    padding-left: 10px;
   }
   .cell {
     margin: 1px;
