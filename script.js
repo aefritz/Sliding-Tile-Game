@@ -4,32 +4,32 @@ let time = 0;       //global variable to keep track of the current time when gam
 let moves = 0;      //global variable tracking the player's current number of moves
 let currentBestMoves; //global variable storing the player's record number of moves
 let currentBestTime;  //global variable storing the player's record time
-let boardPositions;  //two-dimensional array that is iterated through to set up the puzzle and positions
 let moveAudio = document.querySelectorAll('audio')[0];
 let winAudio = document.querySelectorAll('audio')[1];
 let imageSrc = document.querySelector('.setImage');
 let setGrid = document.querySelector('.setGrid');
 let setPuzzle = document.querySelector('.setPuzzle')
 let start = document.querySelector('.start');
-let gridSize;
-setGrid.value = 4;
-imageSrc.value = "assets/the-scream.jpg";
+let gridSize; //allows the current puzzle size to be accessed globally
+setGrid.value = 4; //sets default value for the puzzle size
+imageSrc.value = "assets/the-scream.jpg"; //sets a default value for the puzzle image
 board.style.width = "410px";
 board.style.height = "410px";
 
 start.addEventListener('click', AddListenersAndRandomizeBoard); //when clicked, the start button randomizes the board, adds click listeners to each tile, and starts timer and move counters
-setPuzzle.addEventListener('click', setPuzzleBoard);
+setPuzzle.addEventListener('click', setPuzzleBoard); //resets the puzzle board;
 
 function setPuzzleBoard () {
-  gridSize = getGridValue();
+  gridSize = getGridValue(); //
   if (interval) {
-    clearInterval(interval);
+    clearInterval(interval);  //if the player resets the board, the current time is paused
   }
   clearBoard();
   let customBoardArray = makeBoardArray(gridSize);
   makeBoard(customBoardArray, gridSize);
 }
-setPuzzleBoard();
+setPuzzleBoard(); //sets the puzzle board to the defaults specified above
+window.addEventListener('resize',adjustScreen);
 
 function clearBoard () {
   document.querySelectorAll('.cell').forEach(a => a.remove());
@@ -53,7 +53,7 @@ function makeBoard (array) {
        newCell.style.background = "url(" + imageSrc.value + ")";
        newCell.style.margin = `${10/(2*gridSize)}px`
        newCell.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
-       newCell.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`
+       newCell.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`;
        board.appendChild(newCell);
        document.querySelector('.emptySpace').style.background = 'black';
     });
@@ -171,4 +171,25 @@ function getGridValue () {
 function updateSrc (filesArray) {
   let newSrc = window.URL.createObjectURL(filesArray[0])
   imageSrc.value = newSrc;
+}
+function adjustScreen () {
+  if (window.matchMedia("(max-width: 650px)").matches) {
+    board.style.width = `310px`;
+    board.style.height = `310px`;
+    reSize();
+  } else if (window.matchMedia("(min-width: 650px)").matches) {
+    board.style.width = `410px`;
+    board.style.height = `410px`;
+    reSize();
+  }
+}
+function reSize () {
+  document.querySelectorAll('.cell').forEach(a => {
+    let boardWidth = extractPixels(board.style.width);
+    let boardHeight = extractPixels(board.style.height);
+    a.style.width = `${(boardWidth-10)/gridSize}px`;
+    a.style.height = `${(boardHeight-10)/gridSize}px`;
+    a.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
+    a.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`;
+  });
 }
