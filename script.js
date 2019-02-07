@@ -63,10 +63,10 @@ function makeBoard (array) {
 
 function testForMove (ev) {  //testForMove checks whether or not style.order for a div element has a difference of 1 (for same row) or 4 from the empty space. This is the condition that constitutes a valid move.
   let emptySpace = document.querySelector('.emptySpace')
-  if (((Math.abs(ev.target.style.order - emptySpace.style.order) === 1 && (ev.target.dataset.row == emptySpace.dataset.row)) || (Math.abs(ev.target.style.order - emptySpace.style.order) === gridSize)) {
+  if (((Math.abs(ev.target.style.order - emptySpace.style.order) === 1 && (ev.target.dataset.row == emptySpace.dataset.row)) || (Math.abs(ev.target.style.order - emptySpace.style.order) === getGridValue()))) {
     swapOrder(ev.target, document.querySelector('.emptySpace')); //swap the position of the empty space and the target tile
     moves++; //a move was made, so we up the move counter
-    moveAudio.currentTime = 0.3; //to better align the audio sample to the sound
+    moveAudio.currentTime = 0.3;
     moveAudio.play();
     document.querySelector('.number-moves').innerText = `Moves: ${moves}`; //update the move counter in the DOM;
     renderScreenAndCheckWin();
@@ -87,9 +87,9 @@ function renderScreenAndCheckWin () { //checks whether or not the CSS order of t
   if (boardDivs.every(a => (extractIDFromClass(a.classList[1]) == a.style.order))) {
     winAudio.play();
     alert("You win");
-    boardDivs.forEach(a => a.removeEventListener('click',testForMove)); //when you win, the puzzle tiles lock up
-    clearInterval(interval); //timer stops counting
-    if ((time < currentBestTime) || !(currentBestTime)) { //following lines of code determine whether the game stats for the game just finished are records.. second logical operators in each conidtional determine whether or not its the first game
+    boardDivs.forEach(a => a.removeEventListener('click',testForMove));
+    clearInterval(interval);
+    if ((time < currentBestTime) || !(currentBestTime)) {
       currentBestTime = time;
     }
     if (moves < currentBestMoves || !(currentBestMoves)) {
@@ -115,7 +115,7 @@ function randomizeTiles () { //this function locates the empty space in the puzz
   swapOrder(emptyPos, document.querySelector(`.id${positionToBeSwapped}`));
 }
 
-function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took really long to execute. if gridSize = 2, it only iterates 3 times.
+function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
   if (interval) {
     clearInterval(interval);
   }
@@ -214,7 +214,7 @@ function reSize () {
 function toggleImageHint () {
   let hiddenDisplay = document.querySelector('.hiddenDisplay');
   if (!imageToggler){
-    hiddenDisplay.style.display = 'block'; //following lines of code make the hidden div visible...
+    hiddenDisplay.style.display = 'block';
     hiddenDisplay.style.width = '100%';
     hiddenDisplay.style.height = '100%';
     hiddenDisplay.style.zIndex = '1';
@@ -222,7 +222,7 @@ function toggleImageHint () {
     hiddenDisplay.addEventListener('click',toggleImageHint);
     document.querySelector('.imageContainer').innerHTML = `<img src = ${imageSrc.value}>`;
   } else if (imageToggler){
-    hiddenDisplay.style.display = 'none'; //the following lines of code hide the div again
+    hiddenDisplay.style.display = 'none';
     hiddenDisplay.style.width = '0%';
     hiddenDisplay.style.height = '0%';
     hiddenDisplay.style.zIndex = '0';
