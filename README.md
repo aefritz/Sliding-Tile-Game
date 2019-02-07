@@ -8,6 +8,8 @@ Images courtesy of Rachel Lang @ https://africageographic.com/blog/crazy-baby-ho
 
 ## Description
 
+**MVP:**
+
 This project is a JavaScript-based version of a popular puzzle-like game.
 
 In this particular version of the game, a large square image is split among 15 smaller square tiles, which fill a 4x4 grid leaving one empty space. At the start of the game play -- initialized when the user presses the start button -- these tiles are arranged at random in in the grid.
@@ -15,6 +17,8 @@ In this particular version of the game, a large square image is split among 15 s
 The user is able to rearrange the tiles on the board by clicking those tiles adjacent to the empty space. The clicked tile is then moved into the empty space, and the empty space now occupies the position of the moved tile.
 
 Game play is complete when the tiles have been property reordered to their starting positions.
+
+**Post-MVP:**
 
 I would like to add the following additional functionalities to my applet:
 1. User is able to replay after a win.
@@ -26,7 +30,7 @@ I would like to add the following additional functionalities to my applet:
 ## Technologies used:
 
 1. HTML
-2. CSS - flex box, animations
+2. CSS
 3. JavaScript - array methods: forEach, filter
 
 
