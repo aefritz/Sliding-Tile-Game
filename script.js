@@ -1,19 +1,39 @@
 let board = document.querySelector('.board'); //refers to the div element containing the puzzle
-let interval;       //global variable that stores the timer interval when gameplay starts
+let interval;       //global variable that stores the timing interval when gameplay starts
 let time = 0;       //global variable to keep track of the current time when gameplay starts
 let moves = 0;      //global variable tracking the player's current number of moves
 let currentBestMoves; //global variable storing the player's record number of moves
 let currentBestTime;  //global variable storing the player's record time
-let boardPositions = [  //two-dimensional array that is iterated through to set up the puzzle and positions
-  [1,2,3,4],
-  [5,6,7,8],
-  [9,10,11,12],
-  [13,14,15,16]
-];
+let boardPositions;  //two-dimensional array that is iterated through to set up the puzzle and positions
 let moveAudio = document.querySelectorAll('audio')[0];
 let winAudio = document.querySelectorAll('audio')[1];
+let imageSrc = document.querySelector('.setImage');
+let setGrid = document.querySelector('.setGrid');
+let setPuzzle = document.querySelector('.setPuzzle')
+let start = document.querySelector('.start');
+let gridSize;
+setGrid.value = 4;
+imageSrc.value = "assets/the-scream.jpg";
+board.style.width = "410px";
+board.style.height = "410px";
 
-document.querySelector(".start").addEventListener('click', AddListenersAndRandomizeBoard); //when clicked, the start button randomizes the board, adds click listeners to each tile, and starts timer and move counters
+start.addEventListener('click', AddListenersAndRandomizeBoard); //when clicked, the start button randomizes the board, adds click listeners to each tile, and starts timer and move counters
+setPuzzle.addEventListener('click', setPuzzleBoard);
+
+function setPuzzleBoard () {
+  gridSize = getGridValue();
+  if (interval) {
+    clearInterval(interval);
+  }
+  clearBoard();
+  let customBoardArray = makeBoardArray(gridSize);
+  makeBoard(customBoardArray, gridSize);
+}
+setPuzzleBoard();
+
+function clearBoard () {
+  document.querySelectorAll('.cell').forEach(a => a.remove());
+}
 
 function makeBoard (array) {
   array.forEach((row) => {
@@ -24,17 +44,24 @@ function makeBoard (array) {
        } else {
          newCell.setAttribute('class',`cell id${a}`);
        }
+       let boardWidth = extractPixels(board.style.width);
+       let boardHeight = extractPixels(board.style.height);
+       newCell.style.width = `${(boardWidth-10)/gridSize}px`;
+       newCell.style.height = `${(boardHeight-10)/gridSize}px`;
        newCell.dataset.row = array.indexOf(row);    //dataset.row becomes necessary to check whether certain moves are valid below, corresponds with the row in the two dimensional array above.
-       newCell.style.background = "url(assets/" + `${a-1}` +".png)"; //accesses the background images for each tile
-       newCell.style.order = a;                     //the tiles on the puzzleboard are arranged in a flexbox that wraps; style.order provides an easy way of reordering the tiles and also tracking how they've been rearranged relative to the start;
+       newCell.style.order = a;  //the tiles on the puzzleboard are arranged in a flexbox that wraps; style.order provides an easy way of reordering the tiles and also tracking how they've been rearranged relative to the start;
+       newCell.style.background = "url(" + imageSrc.value + ")";
+       newCell.style.margin = `${10/(2*gridSize)}px`
+       newCell.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
+       newCell.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`
        board.appendChild(newCell);
-     });
+       document.querySelector('.emptySpace').style.background = 'black';
+    });
   });
 }
-makeBoard(boardPositions); //runs the function above to set up the board;
 
 function testForMove (ev) {  //testForMove checks whether or not style.order for a div element has a difference of 1 (for same row) or 4 from the empty space. This is the condition that constitutes a valid move.
-  if (((Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 1 && (ev.target.dataset.row == document.querySelector('.emptySpace').dataset.row)) || (Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 4))) {
+  if (((Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === 1 && (ev.target.dataset.row == document.querySelector('.emptySpace').dataset.row)) || (Math.abs(ev.target.style.order - document.querySelector('.emptySpace').style.order) === getGridValue()))) {
     swapOrder(ev.target, document.querySelector('.emptySpace')); //swap the position of the empty space and the target tile
     moves++; //a move was made, so we up the move counter
     moveAudio.currentTime = 0.3;
@@ -70,7 +97,8 @@ function renderScreenAndCheckWin () { //checks whether or not the CSS order of t
 function randomizeTiles () { //this function locates the empty space in the puzzleboard and searches for the tiles around it that could validly be moved into the space. The function then chooses between these possibilites at random.
   let emptyPos = document.querySelector('.emptySpace');
   let boardDivs = Array.from(document.querySelectorAll('.cell')); //the NodeList needs to be cast as an array before we filter among the necessary conditions
-  let validSwitches = boardDivs.filter(a => (((Math.abs(a.style.order-emptyPos.style.order) === 1) && (a.dataset.row == emptyPos.dataset.row))) || (Math.abs(a.style.order-emptyPos.style.order) === 4));
+  let validSwitches = boardDivs.filter(a => (((Math.abs(a.style.order - emptyPos.style.order) === 1) && (a.dataset.row == emptyPos.dataset.row))) || (Math.abs(a.style.order - emptyPos.style.order) === gridSize));
+  console.log(validSwitches)
   let noOfValidMoves = validSwitches.length; //how many possible moves are there?
   let incrementForRando = 1 / (noOfValidMoves); //the size of this increment decreases when there are more possibilites. This is used to segment the width [0,1] into a number of intervals. Whichever interval the random number falls into coresponds with which of the possible moves the program will use to scramble the puzzleboard.
   let newRandom = Math.random();
@@ -85,10 +113,10 @@ function randomizeTiles () { //this function locates the empty space in the puzz
 function AddListenersAndRandomizeBoard () { //randomizeBoard() makes 100 random moves; for some reason nested loops took compute time
   let cells = document.querySelectorAll('.cell');
   cells.forEach(a => a.addEventListener('click',testForMove));
-  for (h=0;h<5;h++) {
-    for (j=0;j<5;j++) {
-      for (i=0;i<5;i++) {
-        randomizeTiles();
+  for (h=0; h<4; h++) {
+    for (j=0; j<5; j++) {
+      for (i=0; i<5; i++) {
+        randomizeTiles(gridSize);
       }
     }
   }
@@ -112,4 +140,27 @@ function extractIDFromClass (str) { //to avoid use of Id, a unique identifier is
   newArray.splice(0,2);
   newStr = newArray.join('');
   return parseInt(newStr);
+}
+function makeBoardArray (value) {
+  let counter = 0;
+  let returnArray = [];
+  for (i=0;i<value;i++) {
+    let newRow = [];
+    for (j=0;j<value;j++) {
+      newRow.push(counter+1);
+      counter++;
+    }
+    returnArray.push(newRow);
+  }
+  return returnArray;
+}
+function extractPixels (str) {
+  return parseInt(str.substring(0, str.length - 2));
+}
+function getGridValue () {
+  return parseInt(setGrid.value);
+}
+function updateSrc (filesArray) {
+  let newSrc = window.URL.createObjectURL(filesArray[0])
+  imageSrc.value = newSrc;
 }

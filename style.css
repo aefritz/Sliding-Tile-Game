@@ -12,13 +12,14 @@ header {
   padding-bottom: 20px;
 }
 h1 {
-  margin: 0;
-  margin-left: 35%;
+  width: 50%;
+  margin: 0 auto;
   padding: 0;
+  text-align: center;
 }
 main {
   margin: 0;
-  padding: 0;
+  padding-left: 20px;
   display: grid;
   grid-template-columns: 23% 4% 1fr 8%;
 }
@@ -26,6 +27,7 @@ section {
   padding-top: 40px;
   background: turquoise;
   grid-column-start: 1;
+  border-radius: 15px;
 }
 button {
   width: 80px;
@@ -48,12 +50,38 @@ button:hover {
   background: turquoise;
   border: 10px solid turquoise;
   border-radius: 8px;
-  margin: 40px;
+  margin-top: 0px;
   margin-left: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+}
+.controlPanel {
+  border-radius: 15px;
+  height: 100px;
+  margin: 20px 0;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.control {
+  padding-top: 10px;
+  height: 80px;
+  margin: 0 3px;
+  align-content: flex-start;
+}
+.cell {
+  margin: 1px;
+  height: 100px;
+  width: 100px;
+  background: green;
+}
+.setPuzzle {
+  width: 150px;
+  font-size: 22px;
+  margin: 0;
 }
 .cell {
   margin: 1px;
@@ -71,15 +99,32 @@ img {
   height: 100%;
   width: 100%;
 }
+input {
+  margin: 0;
+  width: 25%;
+  height: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+.upload {
+  width: 90px;
+}
 p {
   line-height: 50px;
   font-weight: 800;
+  font-size: 18px;
   margin-left: 20px;
+}
+span {
+  line-height: 30px;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
 }
 @media (max-width: 780px) {
   p {
-    margin-left: 10px;
-    font-size: 12px;
+    margin-left: 0px;
+    font-size: 16px;
   }
   button {
     padding: 0;
@@ -88,17 +133,56 @@ p {
   }
   h1 {
     font-size: 28px;
+    width: 50%;
+    margin: 0 auto;
+  }
+  span {
+    font-size: 16px;
+  }
+  input {
+    font-size: 16px;
+  }
+  section {
+    padding-top: 20px;
+    padding-left: 10px;
+  }
+  main {
+    grid-template-columns: 25% 1% 1fr 7%;
   }
   .board {
     width: 308px;
     height: 308px;
     margin: 30px;
+    margin-bottom: 0px;
+    margin-top: 0px;
     margin-left: 45px;
+  }
+  .setPuzzle {
+    font-size: 18px;
+    width: 100%;
+  }
+  .controlPanel {
+    justify-content: flex-start;
+    padding: 10px;
+  }
+  .control {
+    padding-top: 0px;
+    margin: 10px;
+    width: 28%;
+  }
+  .container1 {
+    width: 32%;
+  }
+  .container2 {
+    width: 40%;
   }
   .cell {
     margin: 1px;
     height: 75px;
     width: 75px;
     background: green;
+  }
+  .upload {
+    width: 80px;
   }
 }

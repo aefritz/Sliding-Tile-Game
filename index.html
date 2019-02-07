@@ -13,7 +13,26 @@
     <header>
       <h1>Sliding Tile Game</h1>
     </header>
+    <section class='controlPanel'>
 
+      <div class='control container1'>
+        <span>
+          Enter grid size: <input class="setGrid"></input>
+        </span>
+    </div>
+
+    <div class='control container2'>
+      <span>
+        Enter image source: <input class="setImage"></input><br>
+        <input class='upload' type='file' name='upload' onchange='updateSrc(this.files)'></input>
+      </span>
+    </div>
+
+    <div class='control'>
+      <button class="setPuzzle">Set Puzzle</button>
+    </div>
+
+    </section>
     <main>
       <section>
         <button class="start">Start</button>
