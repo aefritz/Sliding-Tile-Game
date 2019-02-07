@@ -29,7 +29,7 @@ function setPuzzleBoard () {
   }
   clearBoard();
   let customBoardArray = makeBoardArray(gridSize);
-  makeBoard(customBoardArray, gridSize);
+  makeBoard(customBoardArray);
 }
 setPuzzleBoard(); //sets the puzzle board to the defaults specified above
 window.addEventListener('resize',adjustScreen);
@@ -192,24 +192,25 @@ function reSize () {
     let boardHeight = extractPixels(board.style.height);
     a.style.width = `${(boardWidth-10)/gridSize}px`;
     a.style.height = `${(boardHeight-10)/gridSize}px`;
-    a.style.backgroundSize = `${boardWidth}px ${boardHeight}px`;
-    a.style.backgroundPosition = `${-(boardWidth/gridSize)*((a-1)%gridSize)}px ${-(boardHeight/gridSize)*(parseInt((a-1)/gridSize))}px`;
+    a.style.backgroundSize = `${boardWidth-10}px ${boardHeight-10}px`;
+    a.style.backgroundPosition = `${-((boardWidth-10)/gridSize)*((parseInt(a.style.order)-1)%gridSize)}px ${-((boardHeight-10)/gridSize)*(parseInt((parseInt(a.style.order)-1)/gridSize))}px`;
   });
 }
 function toggleImageHint () {
+  let hiddenDisplay = document.querySelector('.hiddenDisplay');
   if (!imageToggler){
-    document.querySelector('.hiddenDisplay').style.display = 'block';
-    document.querySelector('.hiddenDisplay').style.width = '100%';
-    document.querySelector('.hiddenDisplay').style.height = '100%';
-    document.querySelector('.hiddenDisplay').style.zIndex = '1';
+    hiddenDisplay.style.display = 'block';
+    hiddenDisplay.style.width = '100%';
+    hiddenDisplay.style.height = '100%';
+    hiddenDisplay.style.zIndex = '1';
     imageToggler = true;
-    document.querySelector('.hiddenDisplay').addEventListener('click',toggleImageHint);
+    hiddenDisplay.addEventListener('click',toggleImageHint);
     document.querySelector('.imageContainer').innerHTML = `<img src = ${imageSrc.value}>`;
   } else if (imageToggler){
-    document.querySelector('.hiddenDisplay').style.display = 'none';
-    document.querySelector('.hiddenDisplay').style.width = '0%';
-    document.querySelector('.hiddenDisplay').style.height = '0%';
-    document.querySelector('.hiddenDisplay').style.zIndex = '0';
+    hiddenDisplay.style.display = 'none';
+    hiddenDisplay.style.width = '0%';
+    hiddenDisplay.style.height = '0%';
+    hiddenDisplay.style.zIndex = '0';
     imageToggler = false;
   }
 }

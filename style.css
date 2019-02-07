@@ -56,7 +56,7 @@ main {
   margin: 0;
   padding-left: 20px;
   display: grid;
-  grid-template-columns: 23% 4% 1fr 8%;
+  grid-template-columns: 27% 4% 1fr 8%;
 }
 section {
   padding-top: 40px;
@@ -201,11 +201,11 @@ span {
   }
   .setPuzzle {
     font-size: 18px;
-    width: 70%;
+    width: 80%;
   }
   .showImage {
     font-size: 18px;
-    width: 70%;
+    width: 80%;
   }
   .controlPanel {
     justify-content: flex-start;
@@ -233,5 +233,24 @@ span {
   }
   .upload {
     width: 87px;
+  }
+}
+@media (max-width: 650px) {
+  main {
+    grid-template-columns: 28% 1% 1fr 5%;
+  }
+}
+@media (max-width: 550px) {
+  main {
+    grid-template-columns: 40% 1% 1fr 1%;
+  }
+  .setPuzzle {
+    width: 90%;
+  }
+  .showImage {
+    width: 90%;
+  }
+  .control {
+    margin: 0
   }
 }
