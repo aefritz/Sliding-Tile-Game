@@ -33,7 +33,7 @@ function setPuzzleBoard () {
 }
 
 setPuzzleBoard(); //sets the puzzle board to the defaults specified above
-window.addEventListener('resize',adjustScreen); //checks if the screen is resized & runs the function adjustScreen, which resizes div elements in puzzle board
+/* window.addEventListener('resize',adjustScreen); */ //checks if the screen is resized & runs the function adjustScreen, which resizes div elements in puzzle board
 
 
 function makeBoard (array) {
@@ -86,7 +86,6 @@ function renderScreenAndCheckWin () { //checks whether or not the CSS order of t
   let boardDivs = Array.from(document.querySelectorAll('.cell'));
   if (boardDivs.every(a => (extractIDFromClass(a.classList[1]) == a.style.order))) {
     winAudio.play();
-    alert("You win");
     boardDivs.forEach(a => a.removeEventListener('click',testForMove));
     clearInterval(interval);
     if ((time < currentBestTime) || !(currentBestTime)) {
@@ -96,6 +95,7 @@ function renderScreenAndCheckWin () { //checks whether or not the CSS order of t
       currentBestMoves = moves;
     }
     updateBestScores();
+    return alert("You win");
   }
 }
 
