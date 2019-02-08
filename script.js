@@ -33,7 +33,7 @@ function setPuzzleBoard () {
 }
 
 setPuzzleBoard(); //sets the puzzle board to the defaults specified above
-/* window.addEventListener('resize',adjustScreen); */ //checks if the screen is resized & runs the function adjustScreen, which resizes div elements in puzzle board
+window.addEventListener('resize',adjustScreen); //checks if the screen is resized & runs the function adjustScreen, which resizes div elements in puzzle board
 
 
 function makeBoard (array) {
@@ -207,7 +207,7 @@ function reSize () {
     a.style.width = `${(boardWidth-10)/gridSize}px`; //the 10s here represent the total available margin space in the puzzleboard; after the tiles are positioned
     a.style.height = `${(boardHeight-10)/gridSize}px`;
     a.style.backgroundSize = `${boardWidth-10}px ${boardHeight-10}px`;
-    a.style.backgroundPosition = `${-((boardWidth-10)/gridSize)*((parseInt(a.style.order)-1)%gridSize)}px ${-((boardHeight-10)/gridSize)*(parseInt((parseInt(a.style.order)-1)/gridSize))}px`;
+    a.style.backgroundPosition = `${-((boardWidth-10)/gridSize)*(((extractIDFromClass(a.classList[1])-1)%gridSize))}px ${-((boardHeight-10)/gridSize)*(parseInt((extractIDFromClass(a.classList[1])-1)/gridSize))}px`;
   });
 }
 
